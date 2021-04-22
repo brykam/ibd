@@ -1,4 +1,6 @@
 {
+  "name": "wit/ibd",
+  "description": "Projekt Internetowe Bazy Danych",
   "require": {
     "php": "^7.4",
     "ext-pdo": "*"
