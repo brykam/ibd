@@ -68,6 +68,25 @@ class Stronicowanie
      * @param string $plik Nazwa pliku, do którego będą kierować linki
      * @return string
      */
+
+    public function pobierzLiczbePozycji(string $select): string{
+        $ile_rekordow = $this->db->policzRekordy($select, $this->parametryZapytania);
+
+        $pierwszy_rekord = $this->strona * $this->naStronie + 1;
+        if ($pierwszy_rekord > $ile_rekordow){
+            $pierwszy_rekord = 0;
+        }
+
+        $ostatni_rekord = $this->strona * $this->naStronie + $this->naStronie;
+        if ($ostatni_rekord > $ile_rekordow){
+            $ostatni_rekord = $ile_rekordow;
+        }
+
+        $stats = sprintf("Wyświetlono %d - %d z %d rekordów",
+            $pierwszy_rekord, $ostatni_rekord, $ile_rekordow);
+        return $stats;
+    }
+
     public function pobierzLinki(string $select, string $plik): string
     {
         $rekordow = $this->db->policzRekordy($select, $this->parametryZapytania);
@@ -75,6 +94,26 @@ class Stronicowanie
         $parametry = $this->_przetworzParametry();
 
         $linki = "<nav><ul class='pagination'>";
+        if ($this->strona == 0){
+            $linki .= "<li class='page-item active'><a class='page-link'>Początek</a></li>";
+        } else {
+            $linki .= sprintf(
+                "<li class='page-item'><a href='%s?%s&strona=%d' class='page-link'>Początek</a></li>",
+                $plik,
+                $parametry,
+                0);
+        }
+
+        if ($this->strona == 0){
+            $linki .= "<li class='page-item inactive'><a class='page-link'><</a></li>";
+        } else {
+            $linki .= sprintf(
+                "<li class='page-item '><a href='%s?%s&strona=%d' class='page-link'><</a></li>",
+                $plik,
+                $parametry,
+                $this->strona - 1);
+        }
+
         for ($i = 0; $i < $liczbaStron; $i++) {
             if ($i == $this->strona) {
                 $linki .= sprintf("<li class='page-item active'><a class='page-link'>%d</a></li>", $i + 1);
@@ -88,6 +127,26 @@ class Stronicowanie
                 );
             }
         }
+        if ($this->strona == $liczbaStron - 1){
+            $linki .= "<li class='page-item inactive'><a class='page-link'>></a></li>";
+        } else {
+            $linki .= sprintf(
+                "<li class='page-item '><a href='%s?%s&strona=%d' class='page-link'>></a></li>",
+                $plik,
+                $parametry,
+                $this->strona + 1);
+        }
+
+        if ($this->strona == $liczbaStron -1 ){
+            $linki .= "<li class='page-item active'><a class='page-link'>Koniec</a></li>";
+        } else {
+            $linki .= sprintf(
+                "<li class='page-item'><a href='%s?%s&strona=%d' class='page-link'>Koniec</a></li>",
+                $plik,
+                $parametry,
+                $liczbaStron-1);
+        }
+
         $linki .= "</ul></nav>";
 
         return $linki;

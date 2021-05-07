@@ -16,6 +16,8 @@ $zapytanie = $ksiazki->pobierzZapytanie($_GET);
 // dodawanie warunków stronicowania i generowanie linków do stron
 $stronicowanie = new Stronicowanie($_GET, $zapytanie['parametry']);
 $linki = $stronicowanie->pobierzLinki($zapytanie['sql'], 'ksiazki.lista.php');
+$stats = $stronicowanie->pobierzLiczbePozycji($zapytanie['sql']);
+
 $select = $stronicowanie->dodajLimit($zapytanie['sql']);
 $lista = $ksiazki->pobierzStrone($select, $zapytanie['parametry']);
 ?>
@@ -37,6 +39,7 @@ $lista = $ksiazki->pobierzStrone($select, $zapytanie['parametry']);
             <?php endforeach; ?>
         </select>
 
+
         <select name="sortowanie" id="sortowanie" class="form-control form-control-sm mr-2">
             <option value="">sortowanie</option>
             <option value="k.tytul ASC"
@@ -55,6 +58,16 @@ $lista = $ksiazki->pobierzStrone($select, $zapytanie['parametry']);
                 <?= ($_GET['sortowanie'] ?? '') == 'k.cena DESC' ? 'selected' : '' ?>
             >cenie malejąco
             </option>
+
+            <option value="autorzy.nazwisko ASC"
+                <?= ($_GET['sortowanie'] ?? '') == 'autorzy.nazwisko ASC' ? 'selected' : '' ?>
+            >autorze rosnąco
+            </option>
+            <option value="autorzy.nazwisko DESC"
+                <?= ($_GET['sortowanie'] ?? '') == 'autorzy.nazwisko DESC' ? 'selected' : '' ?>
+            >autorze malejąco
+            </option>
+
         </select>
 
         <button class="btn btn-sm btn-primary" type="submit">Szukaj</button>
@@ -94,7 +107,7 @@ $lista = $ksiazki->pobierzStrone($select, $zapytanie['parametry']);
         <?php endforeach; ?>
         </tbody>
     </table>
-
+    <p class="text-center"> <?= $stats ?></p>
     <nav class="text-center">
         <?= $linki ?>
     </nav>
