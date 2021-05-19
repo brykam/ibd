@@ -147,4 +147,18 @@ class Db
         $params['id'] = $id;
         return $stmt->execute($params);
     }
+
+    /**
+     * Wykonuje podane zapytanie SQL z parametrami.
+     *
+     * @param string $sql
+     * @param array  $params
+     * @return bool
+     */
+    public function wykonaj(string $sql, array $params = []): bool
+    {
+        $stmt = $this->pdo->prepare($sql);
+
+        return $stmt->execute($params);
+    }
 }
