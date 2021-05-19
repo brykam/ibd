@@ -8,6 +8,8 @@ require_once 'vendor/autoload.php';
 
 use Ibd\Menu;
 
+$liczbaKsiazekWKoszyku = 0;
+$koszykHtml = "<span class='badge badge-dark' id='wKoszyku'>$liczbaKsiazekWKoszyku</span>";
 ?>
 
 <!DOCTYPE html>
@@ -37,6 +39,7 @@ use Ibd\Menu;
                 <ul class="navbar-nav mt-2 mt-lg-0">
 					<?= Menu::generujOpcje('index.php', 'Strona główna') ?>
                     <?= Menu::generujOpcje('ksiazki.lista.php', 'Książki') ?>
+                    <?= Menu::generujOpcje('koszyk.lista.php', "Koszyk $koszykHtml") ?>
                 </ul>
             </div>
         </nav>
