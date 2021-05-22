@@ -1,9 +1,9 @@
 <?php
 require_once 'vendor/autoload.php';
-session_start();
+//session_start();
 
 use Ibd\Koszyk;
-
+include 'header.php';
 $koszyk = new Koszyk();
 
 if(isset($_POST['zmien'])) {
@@ -12,8 +12,11 @@ if(isset($_POST['zmien'])) {
 }
 
 $listaKsiazek = $koszyk->pobierzWszystkie();
+$suma = 0;
+foreach ($listaKsiazek as $ks){
+    $suma += $ks['liczba_sztuk'] * $ks['cena'];
+}
 
-include 'header.php';
 ?>
 
 <h2>Koszyk</h2>
@@ -55,10 +58,10 @@ include 'header.php';
 						</td>
 						<td><?= $ks['cena'] * $ks['liczba_sztuk'] ?></td>
 						<td style="white-space: nowrap">
-							<a href="koszyk.usun.php" title="usuń z koszyka">
+							<a href="koszyk.usun.php?id_koszyka=<?= $ks['id_koszyka'] ?>" title="usuń z koszyka" class="aUsunZKoszyka">
                                 <i class="fas fa-trash"></i>
 							</a>
-							<a href="ksiazki.szczegoly.php?id=<?=$ks['id']?>" title="szczegóły">
+							<a href="ksiazki.szczegoly.php?id_koszyka=<?=$ks['id']?>" title="szczegóły">
                                 <i class="fas fa-folder-open"></i>
                             </a>
 						</td>
@@ -67,14 +70,17 @@ include 'header.php';
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="5">&nbsp;</td>
+
+                    <td colspan="5">&nbsp;</td>
 					<td colspan="3"><input type="submit" class="btn btn-primary btn-sm" name="zmien" value="Zmień liczbę sztuk" /></td>
 				</tr>
 			</tfoot>
+
 		<?php else: ?>
 			<tr><td colspan="8" style="text-align: center">Brak produktów w koszyku.</td></tr>
 		<?php endif; ?>
+
 	</table>
 </form>
-
+    <p>Całkowity koszt: <?= $suma ?> zł.</p>
 <?php include 'footer.php'; ?>

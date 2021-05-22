@@ -31,6 +31,14 @@ class Koszyk
 		return $this->db->pobierzWszystko($sql);
 	}
 
+    public function pobierzJedna(int $idKsiazki, string $idSesji): array
+    {
+        $sql = "
+			SELECT * FROM koszyk WHERE id_sesji = '$idSesji' AND id_ksiazki = '$idKsiazki'";
+
+        return $this->db->pobierzWszystko($sql);
+    }
+
 	/**
 	 * Dodaje książkę do koszyka.
 	 *
@@ -74,6 +82,7 @@ class Koszyk
 			if ($ilosc <= 0) {
                 $this->db->usun('koszyk', $idKoszyka);
             } else {
+//			    var_dump($idKoszyka, $ilosc);
                 $this->db->aktualizuj('koszyk', ['liczba_sztuk' => $ilosc], $idKoszyka);
             }
 		}
