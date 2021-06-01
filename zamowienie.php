@@ -11,7 +11,7 @@ if (empty($_SESSION['id_uzytkownika'])) {
 	
 $koszyk = new Koszyk();
 $zamowienia = new Zamowienia();
-$listaKsiazek = $koszyk->pobierzWszystkie(session_id());
+$listaKsiazek = $koszyk->pobierzWszystkie();
 
 if (isset($_POST['zamow'])) {
     $idZamowienia = $zamowienia->dodaj($_SESSION['id_uzytkownika']);
