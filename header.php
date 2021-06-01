@@ -21,6 +21,7 @@ $liczbaKsiazekWKoszyku = count($listaKoszyk);
 //    $liczbaKsiazekWKoszyku += $ks['liczba_sztuk'];
 //}
 $koszykHtml = "<span class='badge badge-dark' id='wKoszyku'>$liczbaKsiazekWKoszyku</span>";
+var_dump($_SESSION);
 ?>
 
 <!DOCTYPE html>

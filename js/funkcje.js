@@ -46,4 +46,31 @@ document.body.onload = () => {
         koszyk.addEventListener('click', usunZKoszyka)
     }
 
+
+    // autorzy
+    document.querySelectorAll('.aUsunAutora').forEach(a => a.addEventListener('click', usunRekord))
+
+    // użytkownicy
+    document.querySelectorAll('.aUsunUzytkownika').forEach(a => a.addEventListener('click', usunRekord))
+}
+
+/**
+ * Usuwa rekord.
+ *
+ */
+async function usunRekord(e) {
+    e.preventDefault()
+
+    if (confirm('Czy na pewno chcesz usunąć rekord?')) {
+        const a = e.target.parentNode
+        const resp = await fetch(a.getAttribute('href'), {method: 'POST'})
+        const text = await resp.text()
+
+        if (text === 'ok') {
+            a.closest('tr').style.textDecoration = 'line-through'
+            a.closest('td').innerHTML = ''
+        } else {
+            alert('Wystąpił błąd przy przetwarzaniu zapytania. Prosimy spróbować ponownie.');
+        }
+    }
 }
