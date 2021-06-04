@@ -1,10 +1,16 @@
 <?php
 
 use Ibd\Ksiazki;
+use Ibd\Koszyk;
 
 $ksiazki = new Ksiazki();
+$koszyk = new Koszyk();
 $lista = $ksiazki->pobierzBestsellery();
-
+$listaKsiazek = $koszyk->pobierzWszystkie();
+$suma = 0;
+foreach ($listaKsiazek as $ks){
+    $suma += $ks['liczba_sztuk'] * $ks['cena'];
+}
 ?>
 <div class="col-md-3">
     <?php if (empty($_SESSION['id_uzytkownika'])): ?>
@@ -33,27 +39,33 @@ $lista = $ksiazki->pobierzBestsellery();
         </p>
     <?php endif; ?>
 
-<div class="col-md-2">
-	<h1>Bestsellery</h1>
-    <ul class="list-group">
-    <?php foreach ($lista as $ks) : ?>
-        <li class="list-group-item" onclick="location.href='ksiazki.szczegoly.php?id=<?= $ks['id'] ?>'">
-            <?php if (!empty($ks['zdjecie'])) : ?>
-                <img src="zdjecia/<?= $ks['zdjecie'] ?>" alt="<?= $ks['tytul'] ?>" class="img-thumbnail" />
-            <?php else : ?>
-                brak zdjęcia
-            <?php endif; ?>
-            <p class="text-center">
-                <strong>
-                    <?= $ks['imie'] . " " . $ks['nazwisko'] ?>
-                </strong>
-                <br>
-                <?= $ks['tytul'] ?>
-            </p>
-        </li>
+    <h1>Koszyk</h1>
+    <p>
+        Suma wartości książek w koszyku:
+        <strong><?= $suma ?></strong> PLN
+    </p>
+    <div class="col">
+        <h1>Bestsellery</h1>
+        <ul class="list-group">
+            <?php foreach ($lista as $ks) : ?>
+                <li class="list-group-item" onclick="location.href='ksiazki.szczegoly.php?id=<?= $ks['id'] ?>'">
+                    <?php if (!empty($ks['zdjecie'])) : ?>
+                        <img src="zdjecia/<?= $ks['zdjecie'] ?>" alt="<?= $ks['tytul'] ?>" class="img-thumbnail" />
+                    <?php else : ?>
+                        brak zdjęcia
+                    <?php endif; ?>
+                    <p class="text-center">
+                        <strong>
+                            <?= $ks['imie'] . " " . $ks['nazwisko'] ?>
+                        </strong>
+                        <br>
+                        <?= $ks['tytul'] ?>
+                    </p>
+                </li>
 
-    <?php endforeach; ?>
+            <?php endforeach; ?>
 
-    </ul>
+        </ul>
 
+    </div>
 </div>
