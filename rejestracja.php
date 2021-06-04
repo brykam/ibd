@@ -5,13 +5,24 @@ session_start();
 use Ibd\Uzytkownicy;
 use Valitron\Validator;
 
+
+function test_input($data): string {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+
 $uzytkownicy = new Uzytkownicy();
 $v = new Validator($_POST);
-
+$exists = False;
+$emailErr = False;
 if (isset($_POST['zapisz'])) {
     $v->rule('required', ['imie', 'nazwisko', 'adres', 'email', 'login', 'haslo']);
-
-    if ($v->validate()) {
+    $exists = $uzytkownicy->czyIstnieje($_POST['login'], $_POST['email']);
+    $email = test_input($_POST["email"]);
+    $emailErr = !filter_var($email, FILTER_VALIDATE_EMAIL);
+    if ($v->validate() && !$emailErr && !$exists) {
         // brak błędów, można dodać użytkownika
         $uzytkownicy->dodaj($_POST);
         header("Location: index.php?msg=1");
@@ -32,6 +43,18 @@ include 'header.php';
             <li><?=implode('<br>', $err) ?></li>
         <?php endforeach; ?>
         </ul>
+    </div>
+<?php endif; ?>
+
+<?php if ($exists): ?>
+    <div class="alert alert-danger" role="alert">
+        Podany użytkownik lub adres e-mail już istnieje!
+    </div>
+<?php endif; ?>
+
+<?php if ($emailErr): ?>
+    <div class="alert alert-danger" role="alert">
+        Adres e-mail ma niewłaściwy format.
     </div>
 <?php endif; ?>
 

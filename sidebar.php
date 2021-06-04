@@ -13,6 +13,7 @@ foreach ($listaKsiazek as $ks){
 }
 ?>
 <div class="col-md-3">
+
     <?php if (empty($_SESSION['id_uzytkownika'])): ?>
         <h1>Logowanie</h1>
 

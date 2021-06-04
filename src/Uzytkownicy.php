@@ -32,7 +32,7 @@ class Uzytkownicy
             'telefon' => $dane['telefon'],
             'email' => $dane['email'],
             'login' => $dane['login'],
-            'haslo' => md5($dane['haslo']),
+            'haslo' => password_hash($dane['haslo'], PASSWORD_BCRYPT),
             'grupa' => $grupa
         ]);
     }
@@ -45,14 +45,24 @@ class Uzytkownicy
      * @param string $grupa
      * @return bool
      */
+
+    public function czyIstnieje(string $login, string $email): bool
+    {
+        $sql = "SELECT * FROM uzytkownicy WHERE login = '$login' OR email = '$email'";
+        $ile = $this->db->policzRekordy($sql, [':login' => $login, ':email' => $email]);
+
+        return $ile > 0;
+    }
+
+
     public function zaloguj(string $login, string $haslo, string $grupa): bool
     {
-        $haslo = md5($haslo);
+//        $haslo = md5($haslo);
         $dane = $this->db->pobierzWszystko(
-            "SELECT * FROM uzytkownicy WHERE login = :login AND haslo = '$haslo' AND grupa = '$grupa'", ['login' => $login]
+            "SELECT * FROM uzytkownicy WHERE login = :login AND grupa = '$grupa'", ['login' => $login]
         );
 
-        if ($dane) {
+        if (password_verify($haslo, $dane[0]['haslo'])) {
             $_SESSION['id_uzytkownika'] = $dane[0]['id'];
             $_SESSION['grupa'] = $dane[0]['grupa'];
             $_SESSION['login'] = $dane[0]['login'];
