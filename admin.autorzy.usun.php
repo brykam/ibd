@@ -8,8 +8,9 @@ require_once 'vendor/autoload.php';
 
 use Ibd\Autorzy;
 
-if(isset($_POST)) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$autorzy = new Autorzy();
-	if($autorzy->usun($_GET['id']))
-		echo 'ok';
+	if ($autorzy->usun($_GET['id'])) {
+        echo 'ok';
+    }
 }

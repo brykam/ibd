@@ -150,7 +150,7 @@ class Uzytkownicy
         ];
 
         if (!empty($dane['haslo'])) {
-            $update['haslo'] = md5($dane['haslo']);
+            $update['haslo'] = password_hash($dane['haslo'], PASSWORD_BCRYPT);
         }
 
         return $this->db->aktualizuj('uzytkownicy', $update, $id);

@@ -44,10 +44,12 @@ if(!$uzytkownicy->sprawdzLogowanie()) {
 						IBD
 					</a>
 					<ul class="navbar-nav mt-2 mt-lg-0">
-						<?= Menu::generujOpcje('admin.index.php', 'Strona główna') ?>
-						<?= Menu::generujOpcje('admin.autorzy.lista.php', 'Autorzy') ?>
-						<?= Menu::generujOpcje('admin.kategorie.lista.php', 'Kategorie') ?>
-						<?= Menu::generujOpcje('admin.uzytkownicy.lista.php', 'Użytkownicy') ?>
+                        <?= Menu::generujOpcje('admin.index.php', 'Strona główna') ?>
+                        <?= Menu::generujOpcje('admin.ksiazki.lista.php', 'Książki') ?>
+                        <?= Menu::generujOpcje('admin.autorzy.lista.php', 'Autorzy') ?>
+                        <?= Menu::generujOpcje('admin.kategorie.lista.php', 'Kategorie') ?>
+                        <?= Menu::generujOpcje('admin.uzytkownicy.lista.php', 'Użytkownicy') ?>
+                        <?= Menu::generujOpcje('admin.zamowienia.lista.php', 'Zamówienia') ?>
 					</ul>
 				</div>
 			</nav>
