@@ -85,4 +85,44 @@ class Autorzy
 		return $this->db->aktualizuj('autorzy', $update, $id);
 	}
 
+    public function pobierzZapytanie(array $params = []): array
+    {
+        $parametry = [];
+        $sql = "SELECT autorzy.imie, autorzy.nazwisko, autorzy.id 
+                FROM autorzy 
+                WHERE 1=1 ";
+
+        // dodawanie warunków do zapytanie
+        if (!empty($params['fraza'])) {
+            $sql .= "AND (
+                     autorzy.nazwisko LIKE :fraza OR
+                     autorzy.imie LIKE :fraza
+                     ) ";
+            $parametry['fraza'] = "%$params[fraza]%";
+        }
+
+        // dodawanie sortowania
+        if (!empty($params['sortowanie'])) {
+            $kolumny = ['autorzy.nazwisko'];
+            $kierunki = ['ASC', 'DESC'];
+            [$kolumna, $kierunek] = explode(' ', $params['sortowanie']);
+
+            if (in_array($kolumna, $kolumny) && in_array($kierunek, $kierunki)) {
+                $sql .= " ORDER BY " . $params['sortowanie'];
+            }
+        }
+        return ['sql' => $sql, 'parametry' => $parametry];
+    }
+
+    public function pobierzStrone(string $select, array $params = []): array
+    {
+        return $this->db->pobierzWszystko($select, $params);
+    }
+
+    public function pobierzLiczbeKsiazek(int $id): array
+    {
+       $select = "SELECT id_autora, count(*) as liczba_ksiazek FROM ksiazki WHERE id_autora = '$id' GROUP BY id_autora";
+        return $this->db->pobierzWszystko($select);
+    }
+
 }

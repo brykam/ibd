@@ -52,6 +52,8 @@ document.body.onload = () => {
 
     // użytkownicy
     document.querySelectorAll('.aUsunUzytkownika').forEach(a => a.addEventListener('click', usunRekord))
+
+    document.querySelectorAll('.aUsunKategorie').forEach(a => a.addEventListener('click', usunRekord))
 }
 
 /**
