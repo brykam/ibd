@@ -57,9 +57,9 @@ class Zamowienia
     {
         $sql = "
 			SELECT z.*, u.login, s.nazwa AS status,
-			ROUND(SUM(sz.cena*sz.liczba_sztuk), 2) AS suma,
-			COUNT(sz.id) AS liczba_produktow,
-			SUM(sz.liczba_sztuk) AS liczba_sztuk
+			ROUND(SUM(zs.cena*zs.liczba_sztuk), 2) AS suma,
+			COUNT(zs.id) AS liczba_produktow,
+			SUM(zs.liczba_sztuk) AS liczba_sztuk
 			FROM zamowienia z 
 			JOIN uzytkownicy u ON z.id_uzytkownika = u.id
 			JOIN zamowienia_statusy s ON z.id_statusu = s.id

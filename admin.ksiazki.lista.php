@@ -51,7 +51,7 @@ $listaAutorow = $autorzy->pobierzWszystko("SELECT * FROM autorzy");
                 </td>
 				<td><?= $ks['id'] ?></td>
 				<td><?= $ks['tytul'] ?></td>
-				<td><?= $ks['autor'] ?></td>
+				<td><?= $ks['imie'] . " " . $ks['nazwisko'] ?></td>
 				<td><?= $ks['kategoria'] ?></td>
 				<td><?= $ks['cena'] ?></td>
 				<td>
