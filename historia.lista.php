@@ -13,7 +13,7 @@ if (empty($_SESSION['id_uzytkownika'])) {
 }
 
 
-$listaZamowien = $zamowienia->pobierzWszystkie($_SESSION['id_uzytkownika']);
+$listaZamowien = $zamowienia->pobierzWszystkieUsera($_SESSION['id_uzytkownika']);
 $order_counter = 1;
 $last_order = -1;
 $suma = 0;

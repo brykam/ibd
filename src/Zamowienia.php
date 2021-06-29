@@ -69,4 +69,47 @@ class Zamowienia
 
         return $this->db->pobierzWszystko($sql);
     }
+    public function pobierzWszystkieUsera(string $idUzytkownika): array
+    {
+        $sql = "SELECT * FROM zamowienia z 
+                JOIN zamowienia_szczegoly AS zs ON z.id = zs.id_zamowienia
+                JOIN ksiazki AS k ON zs.id_ksiazki = k.id
+                WHERE id_uzytkownika = '$idUzytkownika'";
+
+        return $this->db->pobierzWszystko($sql);
+    }
+
+    public function pobierzZamowienie(string $idZamowienia): array
+    {
+        $sql = "SELECT zs.*, k.zdjecie, k.id_autora, a.id, k.tytul, CONCAT(a.imie, ' ', a.nazwisko) AS autor, u.login,
+                z.data_dodania, s.nazwa as status
+                FROM zamowienia z 
+                JOIN zamowienia_szczegoly AS zs ON z.id = zs.id_zamowienia
+                JOIN uzytkownicy AS u ON z.id_uzytkownika = u.id
+                JOIN ksiazki AS k ON zs.id_ksiazki = k.id
+                JOIN autorzy AS a ON a.id = k.id_autora
+                JOIN zamowienia_statusy s ON z.id_statusu = s.id
+                WHERE zs.id_zamowienia = '$idZamowienia'";
+
+        return $this->db->pobierzWszystko($sql);
+    }
+
+    public function pobierzStatusy(): array{
+        $sql = "SELECT * FROM zamowienia_statusy";
+        return $this->db->pobierzWszystko($sql);
+    }
+
+    public function edytuj(array $dane, int $id): bool
+    {
+        $update = [
+            'id_statusu' => $dane['status'],
+        ];
+        return $this->db->aktualizuj('zamowienia', $update, $id);
+    }
+
+    public function pobierz(int $id): ?array
+    {
+        return $this->db->pobierz('zamowienia', $id);
+    }
+
 }
